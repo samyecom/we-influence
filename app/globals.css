@@ -85,8 +85,8 @@
 }
 
 html, body {
-  height: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
   background: #000000;
   color: #ffffff;
   font-family: var(--font-ubuntu), Arial, Helvetica, sans-serif;

@@ -15,7 +15,7 @@ const socialItems = [
 
 export default function Navigation() {
   return (
-    <div className="fixed inset-0 z-50 ">
+    <div className="fixed inset-0 z-20 ">
       <StaggeredMenu
         position="right"
         items={menuItems}

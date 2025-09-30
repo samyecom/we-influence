@@ -86,8 +86,8 @@ export default function RootLayout({ children }) {
         data-new-gr-c-s-check-loaded="14.1255.0"
         data-gr-ext-installed=""
       >
-        
-<SplashCursor />
+
+        <SplashCursor />
         <Navigation />
         {children}
       </body>
