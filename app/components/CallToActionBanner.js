@@ -43,7 +43,7 @@ export default function CallToActionBanner() {
 
         <div className="pt-6">
           <button className="group relative inline-flex items-center justify-center px-12 sm:px-16 py-4 sm:py-5 bg-yellow-400 text-black font-black text-lg sm:text-xl rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-yellow-500/50">
-            <span className="relative z-10">LET'S GO!</span>
+            <span className="relative z-10">LET&apos;S GO!</span>
             <div className="absolute inset-0 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
         </div>
