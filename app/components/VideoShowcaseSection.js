@@ -98,7 +98,7 @@ export default function VideoShowcaseSection() {
       charsClass: 'split-char'
     });
 
-    ScrollTrigger.create({
+        ScrollTrigger.create({
       trigger: section,
       start: 'top 80%',
       once: true,
@@ -109,8 +109,9 @@ export default function VideoShowcaseSection() {
             opacity: 0,
             scale: 0.8,
             rotation: 5,
+            y: 30,
             stagger: 0.02,
-            duration: 0.5,
+            duration: 0.8,
             ease: 'back.out(1.7)',
           });
       }
@@ -251,7 +252,7 @@ export default function VideoShowcaseSection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-16 text-center">
-        <p className="text-xl text-white/60">
+        <p className="text-xl text-white/60 animate-pulse">
           Swipe through our stories • Hover to pause • Click to explore
         </p>
       </div>

@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const offerings = [
   {
@@ -68,6 +69,9 @@ export default function OfferingsSection() {
   const cardsRef = useRef([]);
   const [isMobile, setIsMobile] = useState(false);
   const hoverTimelines = useRef({});
+  const mobileTitleRef = useRef(null);
+  const mobileDescRef = useRef(null);
+  const splitTextInstances = useRef([]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -81,12 +85,51 @@ export default function OfferingsSection() {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
-
     const container = containerRef.current;
     const scrollTrack = scrollTrackRef.current;
     const title = titleRef.current;
     const cards = cardsRef.current;
+    const mobileTitle = mobileTitleRef.current;
+    const mobileDesc = mobileDescRef.current;
+
+    if (isMobile) {
+      const mobileElements = [mobileTitle, mobileDesc].filter(Boolean);
+      
+      mobileElements.forEach((element, index) => {
+        if (element) {
+          const splitText = new SplitText(element, {
+            type: 'words,chars',
+            wordsClass: 'split-word',
+            charsClass: 'split-char'
+          });
+          
+          splitTextInstances.current.push(splitText);
+          
+          gsap.set(splitText.chars, {
+            opacity: 0,
+            y: 30,
+            scale: 0.8
+          });
+          
+          ScrollTrigger.create({
+            trigger: element,
+            start: 'top 80%',
+            onEnter: () => {
+              gsap.to(splitText.chars, {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.6,
+                stagger: 0.02,
+                ease: 'back.out(1.7)',
+                delay: index * 0.2
+              });
+            }
+          });
+        }
+      });
+      return;
+    }
 
     if (!container || !scrollTrack || !title) return;
 
@@ -102,6 +145,35 @@ export default function OfferingsSection() {
     scrollTrack.style.width = `${totalTrackWidth}px`;
 
     const maxScroll = totalTrackWidth - windowWidth;
+
+    const titleSplitText = new SplitText(title, {
+      type: 'words,chars',
+      wordsClass: 'split-word',
+      charsClass: 'split-char'
+    });
+    
+    splitTextInstances.current.push(titleSplitText);
+    
+    gsap.set(titleSplitText.chars, {
+      opacity: 0,
+      y: 50,
+      rotationX: -90
+    });
+
+    ScrollTrigger.create({
+      trigger: title,
+      start: 'top 80%',
+      onEnter: () => {
+        gsap.to(titleSplitText.chars, {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.8,
+          stagger: 0.03,
+          ease: 'back.out(1.7)'
+        });
+      }
+    });
 
     const scrollTriggerInstance = ScrollTrigger.create({
       trigger: container,
@@ -154,6 +226,12 @@ export default function OfferingsSection() {
     return () => {
       if (scrollTriggerInstance) scrollTriggerInstance.kill();
       Object.values(hoverTimelines.current).forEach(tl => tl.kill());
+      splitTextInstances.current.forEach(instance => {
+        if (instance && instance.revert) {
+          instance.revert();
+        }
+      });
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isMobile]);
 
@@ -172,8 +250,8 @@ export default function OfferingsSection() {
       <div className="bg-black py-20 px-6">
         <div className="max-w-4xl mx-auto space-y-12">
           <div className="text-center space-y-6">
-            <h2 className="text-5xl font-black text-white">Our Offerings</h2>
-            <p className="text-xl text-white/60">Course. Community. Coaching.</p>
+            <h2 ref={mobileTitleRef} className="text-5xl font-black text-white">Our Offerings</h2>
+            <p ref={mobileDescRef} className="text-xl text-white/60">Course. Community. Coaching.</p>
           </div>
           
           {offerings.map((offering) => (
@@ -226,13 +304,13 @@ export default function OfferingsSection() {
               Our Offerings
             </h2>
             <div className="space-y-4">
-              <p className="text-6xl font-black bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+              <p className="text-6xl font-black text-white drop-shadow-lg">
                 Course.
               </p>
-              <p className="text-6xl font-black bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+              <p className="text-6xl font-black text-white drop-shadow-lg">
                 Community.
               </p>
-              <p className="text-6xl font-black bg-gradient-to-r from-emerald-500 to-cyan-500 bg-clip-text text-transparent">
+              <p className="text-6xl font-black text-white drop-shadow-lg">
                 Coaching.
               </p>
             </div>

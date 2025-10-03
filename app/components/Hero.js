@@ -3,19 +3,89 @@
 import { useEffect, useRef } from 'react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import RotatingPlayButton from './RotatingPlayButton';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 export default function Hero() {
   const heroWrapperRef = useRef(null);
   const sectionsContainerRef = useRef(null);
   const scrollTriggerInstance = useRef(null);
+  const firstHeadingRef = useRef(null);
+  const firstDescRef = useRef(null);
+  const secondHeadingRef = useRef(null);
+  const secondDescRef = useRef(null);
+  const splitTextInstances = useRef([]);
 
   useEffect(() => {
     const heroWrapper = heroWrapperRef.current;
     const sectionsContainer = sectionsContainerRef.current;
+    const firstHeading = firstHeadingRef.current;
+    const firstDesc = firstDescRef.current;
+    const secondHeading = secondHeadingRef.current;
+    const secondDesc = secondDescRef.current;
 
     if (!heroWrapper || !sectionsContainer) return;
+
+    const textElements = [firstHeading, firstDesc, secondHeading, secondDesc].filter(Boolean);
+    
+    textElements.forEach((element, index) => {
+      if (element) {
+        const splitText = new SplitText(element, {
+          type: 'words,chars',
+          wordsClass: 'split-word',
+          charsClass: 'split-char'
+        });
+        
+        splitTextInstances.current.push(splitText);
+        
+        gsap.set(splitText.chars, {
+          opacity: 0,
+          y: 50,
+          rotationX: -90
+        });
+        
+        if (index === 0) {
+          gsap.to(splitText.chars, {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.8,
+            stagger: 0.03,
+            ease: 'back.out(1.7)',
+            delay: 0.5
+          });
+        } else if (index === 1) {
+          gsap.to(splitText.chars, {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.8,
+            stagger: 0.03,
+            ease: 'back.out(1.7)',
+            delay: 1.0
+          });
+        } else {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: element,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          });
+          
+          tl.to(splitText.chars, {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.8,
+            stagger: 0.03,
+            ease: 'back.out(1.7)'
+          });
+        }
+      }
+    });
 
     const updateScrollTrigger = () => {
       if (scrollTriggerInstance.current) {
@@ -52,6 +122,12 @@ export default function Hero() {
       if (scrollTriggerInstance.current) {
         scrollTriggerInstance.current.kill();
       }
+      splitTextInstances.current.forEach(instance => {
+        if (instance && instance.revert) {
+          instance.revert();
+        }
+      });
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
@@ -69,25 +145,22 @@ export default function Hero() {
           <source src="/video/hero.mp4" type="video/mp4" />
         </video>
       </div>
+
+      <div className="absolute bottom-8 right-8 z-50">
+        <RotatingPlayButton videoSrc="/video/hero.mp4" />
+      </div>
         
       <div ref={sectionsContainerRef} className="relative z-10">
         <section className="lg:min-h-screen flex items-center justify-center py-12 sm:py-16 md:py-20">
           
           <div className="relative z-10 text-center space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white leading-tight">
-              WE INFLUENCE
+            <h1 ref={firstHeadingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black leading-tight">
+              <span className="text-white">WE </span>
+              <span className="text-white">INFLUENCE</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed max-w-xl lg:max-w-2xl mx-auto">
+            <p ref={firstDescRef} className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-xl lg:max-w-2xl mx-auto" style={{ color: '#fed775' }}>
               Transform your ideas into powerful digital experiences.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4">
-              <button className="px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-white text-black font-bold text-sm sm:text-base md:text-lg rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300">
-                GET STARTED
-              </button>
-              <button className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-semibold text-sm sm:text-base rounded-full hover:bg-white hover:text-black transition-all duration-300">
-                Learn More
-              </button>
-            </div>
           </div>
         </section>
 
@@ -101,10 +174,11 @@ export default function Hero() {
           ></div>
           
           <div className="relative z-10 text-center space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white leading-tight">
-              SCALE YOUR IMPACT
+            <h1 ref={secondHeadingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black leading-tight">
+              <span className="text-white">SCALE YOUR </span>
+              <span className="text-white">IMPACT</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed max-w-xl lg:max-w-2xl mx-auto">
+            <p ref={secondDescRef} className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-xl lg:max-w-2xl mx-auto" style={{ color: '#fed775' }}>
               Reach more people through cutting-edge technology and strategic design.
             </p>
           </div>

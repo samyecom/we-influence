@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const professors = [
   {
@@ -41,6 +42,9 @@ export default function ProfessorsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const scrollTriggerInstance = useRef(null);
+  const mainTitleRef = useRef(null);
+  const mobileTitleRef = useRef(null);
+  const splitTextInstances = useRef([]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -54,16 +58,79 @@ export default function ProfessorsSection() {
   }, []);
 
   useEffect(() => {
-    if (isMobile) return;
-
     const section = sectionRef.current;
     const leftColumn = leftColumnRef.current;
     const cardsContainer = cardsContainerRef.current;
+    const mainTitle = mainTitleRef.current;
+    const mobileTitle = mobileTitleRef.current;
 
-    if (!section || !leftColumn || !cardsContainer) return;
+    if (isMobile) {
+      if (mobileTitle) {
+        const splitText = new SplitText(mobileTitle, {
+          type: 'words,chars',
+          wordsClass: 'split-word',
+          charsClass: 'split-char'
+        });
+        
+        splitTextInstances.current.push(splitText);
+        
+        gsap.set(splitText.chars, {
+          opacity: 0,
+          y: 30,
+          scale: 0.8
+        });
+        
+        ScrollTrigger.create({
+          trigger: mobileTitle,
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.to(splitText.chars, {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.6,
+              stagger: 0.02,
+              ease: 'back.out(1.7)'
+            });
+          }
+        });
+      }
+      return;
+    }
+
+    if (!section || !leftColumn || !cardsContainer || !mainTitle) return;
 
     const cards = Array.from(cardsContainer.querySelectorAll('.professor-card'));
     const textContents = Array.from(leftColumn.querySelectorAll('.text-content'));
+
+    const titleSplitText = new SplitText(mainTitle, {
+      type: 'words,chars',
+      wordsClass: 'split-word',
+      charsClass: 'split-char'
+    });
+    
+    splitTextInstances.current.push(titleSplitText);
+    
+    gsap.set(titleSplitText.chars, {
+      opacity: 0,
+      y: 50,
+      rotationX: -90
+    });
+
+    ScrollTrigger.create({
+      trigger: mainTitle,
+      start: 'top 80%',
+      onEnter: () => {
+        gsap.to(titleSplitText.chars, {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.8,
+          stagger: 0.03,
+          ease: 'back.out(1.7)'
+        });
+      }
+    });
 
     cards.forEach((card, index) => {
       gsap.set(card, {
@@ -157,6 +224,12 @@ export default function ProfessorsSection() {
       if (scrollTriggerInstance.current) {
         scrollTriggerInstance.current.kill();
       }
+      splitTextInstances.current.forEach(instance => {
+        if (instance && instance.revert) {
+          instance.revert();
+        }
+      });
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [isMobile]);
 
@@ -164,7 +237,7 @@ export default function ProfessorsSection() {
     return (
       <div className="bg-gray-900">
         <div className="bg-amber-900 px-6 py-12 text-center">
-          <h2 className="text-4xl sm:text-5xl font-black text-white leading-none mb-4">
+          <h2 ref={mobileTitleRef} className="text-4xl sm:text-5xl font-black text-white leading-none mb-4">
             MEET YOUR
           </h2>
           <div className="inline-block">
@@ -230,7 +303,7 @@ export default function ProfessorsSection() {
         >
           <div className="max-w-2xl w-full">
             <div className="space-y-3 mb-8">
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-none">
+              <h2 ref={mainTitleRef} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-none">
                 MEET YOUR
               </h2>
               <div className="inline-block">
@@ -311,37 +384,6 @@ export default function ProfessorsSection() {
             </div>
           ))}
 
-          <button className="absolute bottom-6 right-6 lg:bottom-12 lg:right-12 w-16 h-16 lg:w-20 lg:h-20 z-[100]">
-            <div className="relative w-full h-full">
-              <div className="absolute inset-0 bg-white/20 rounded-full backdrop-blur-sm border border-white/30"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 bg-white rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 lg:w-5 lg:h-5 text-black ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-                  <circle 
-                    cx="50" 
-                    cy="50" 
-                    r="45" 
-                    fill="none" 
-                    stroke="white" 
-                    strokeWidth="0.5"
-                    strokeDasharray="283"
-                  />
-                  <text x="50" y="20" fill="white" fontSize="4" fontWeight="bold" textAnchor="middle">
-                    PLAY VIDEO
-                  </text>
-                  <text x="50" y="85" fill="white" fontSize="4" fontWeight="bold" textAnchor="middle">
-                    PLAY VIDEO
-                  </text>
-                </svg>
-              </div>
-            </div>
-          </button>
         </div>
       </div>
     </div>

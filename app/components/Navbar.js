@@ -1,10 +1,84 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(SplitText);
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const logoRef = useRef(null);
+  const menuItemsRef = useRef([]);
+  const splitTextInstances = useRef([]);
+
+  useEffect(() => {
+    const logo = logoRef.current;
+    const menuItems = menuItemsRef.current;
+
+    if (logo) {
+      const logoSplitText = new SplitText(logo, {
+        type: 'words,chars',
+        wordsClass: 'split-word',
+        charsClass: 'split-char'
+      });
+      
+      splitTextInstances.current.push(logoSplitText);
+      
+      gsap.set(logoSplitText.chars, {
+        opacity: 0,
+        y: -20,
+        scale: 0.8
+      });
+      
+      gsap.to(logoSplitText.chars, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.03,
+        ease: 'back.out(1.7)',
+        delay: 0.2
+      });
+    }
+
+    menuItems.forEach((item, index) => {
+      if (item) {
+        const itemSplitText = new SplitText(item, {
+          type: 'words,chars',
+          wordsClass: 'split-word',
+          charsClass: 'split-char'
+        });
+        
+        splitTextInstances.current.push(itemSplitText);
+        
+        gsap.set(itemSplitText.chars, {
+          opacity: 0,
+          y: -15,
+          scale: 0.9
+        });
+        
+        gsap.to(itemSplitText.chars, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.5,
+          stagger: 0.02,
+          ease: 'back.out(1.7)',
+          delay: 0.5 + index * 0.1
+        });
+      }
+    });
+
+    return () => {
+      splitTextInstances.current.forEach(instance => {
+        if (instance && instance.revert) {
+          instance.revert();
+        }
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -56,7 +130,7 @@ export default function Navbar() {
                     />
                   </svg>
                 </div>
-                <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                <span ref={logoRef} className="ml-3 text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                   WeInfluence
                 </span>
               </Link>
@@ -64,10 +138,11 @@ export default function Navbar() {
 
             <div className="hidden lg:block">
               <div className="ml-10 flex items-center space-x-8">
-                {menuItems.map((item) => (
+                {menuItems.map((item, index) => (
                   <Link
                     key={item.name}
                     href={item.href}
+                    ref={(el) => (menuItemsRef.current[index] = el)}
                     className="relative text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-all duration-200 hover:scale-105"
                   >
                     {item.name}
