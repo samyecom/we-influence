@@ -15,7 +15,8 @@ const professors = [
     title: 'PHDribbles at AnkleBreakerU',
     description: '"The Professor" - legendary instructor at We Influence who once TP-ed an entire neighborhood single-handedly in one night. The Professor teaches students how to one-ply, two-ply, and A-ply themselves in the real world.',
     image: '/images/prof1.png',
-    bgColor: 'bg-amber-900'
+    bgColor: 'bg-[#EEE5C2]',
+    textColor: 'text-black'
   },
   {
     id: 2,
@@ -23,7 +24,7 @@ const professors = [
     title: 'Masters at FreshStartU',
     description: '"The Rookie" - rising star instructor at We Influence who brings fresh perspectives and innovative teaching methods. Specializes in helping students break through creative barriers and discover their unique voice.',
     image: '/images/prof2.png',
-    bgColor: 'bg-blue-900'
+    bgColor: 'bg-[#1B475D]'
   },
   {
     id: 3,
@@ -31,7 +32,7 @@ const professors = [
     title: 'PhD at ExperienceU',
     description: '"The Veteran" - seasoned expert at We Influence with decades of industry experience. Known for transforming complex concepts into actionable strategies that deliver real-world results.',
     image: '/images/prof3.png',
-    bgColor: 'bg-purple-900'
+    bgColor: 'bg-[#8EBD9D]'
   },
 ];
 
@@ -295,7 +296,7 @@ export default function ProfessorsSection() {
   }
 
   return (
-    <div ref={sectionRef} className="relative min-h-screen">
+    <div ref={sectionRef} className="relative min-h-screen" style={{ backgroundColor: '#8EBD9D' }}>
       <div className="flex flex-col lg:flex-row min-h-screen">
         <div 
           ref={leftColumnRef}
@@ -303,7 +304,7 @@ export default function ProfessorsSection() {
         >
           <div className="max-w-2xl w-full">
             <div className="space-y-3 mb-8">
-              <h2 ref={mainTitleRef} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-none">
+              <h2 ref={mainTitleRef} className={`text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-none ${activeIndex === 0 ? 'text-black' : 'text-white'}`}>
                 MEET YOUR
               </h2>
               <div className="inline-block">
@@ -319,13 +320,13 @@ export default function ProfessorsSection() {
                   key={prof.id}
                   className="text-content absolute inset-0 space-y-4"
                 >
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white">
+                  <h3 className={`text-2xl sm:text-3xl font-bold ${index === 0 ? 'text-black' : 'text-white'}`}>
                     {prof.name}
                   </h3>
-                  <p className="text-sm sm:text-base text-yellow-300 font-semibold">
+                  <p className={`text-sm sm:text-base font-semibold ${index === 0 ? 'text-black/80' : 'text-yellow-300'}`}>
                     {prof.title}
                   </p>
-                  <p className="text-base sm:text-lg text-white leading-relaxed">
+                  <p className={`text-base sm:text-lg leading-relaxed ${index === 0 ? 'text-black/70' : 'text-white'}`}>
                     {prof.description}
                   </p>
                 </div>
@@ -338,8 +339,12 @@ export default function ProfessorsSection() {
                   key={index}
                   className={`h-1 rounded-full transition-all duration-300 ${
                     index === activeIndex
-                      ? 'w-12 bg-yellow-400'
-                      : 'w-8 bg-white/50'
+                      ? activeIndex === 0 
+                        ? 'w-12 bg-black' 
+                        : 'w-12 bg-yellow-400'
+                      : activeIndex === 0 
+                        ? 'w-8 bg-black/30' 
+                        : 'w-8 bg-white/50'
                   }`}
                 />
               ))}

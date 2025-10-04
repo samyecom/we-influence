@@ -160,42 +160,55 @@ export default function Preloader({ onComplete }) {
   return (
     <div
       ref={preloaderRef}
-      className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      style={{ backgroundColor: '#f7e9c6' }}
     >
-      <div className="text-center space-y-12 px-6">
-        <div ref={logoRef} className="space-y-6">
-          <div className="relative inline-block">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-orange-500 to-pink-500 rounded-full blur-3xl opacity-50"></div>
-            <div className="relative w-32 h-32 mx-auto bg-gradient-to-br from-yellow-400 via-orange-500 to-pink-500 rounded-full flex items-center justify-center">
-              <svg className="w-16 h-16 text-black" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+      <div className="relative max-w-4xl mx-auto text-center px-6">
+        <div className="space-y-12">
+          <div ref={logoRef} className="space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight">
+                <span className="text-black">WE </span>
+                <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">INFLUENCE</span>
+                <br />
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black/80 tracking-wider">ACADEMY</span>
+              </h1>
+              
+              <p className="text-lg sm:text-xl text-black/60 max-w-2xl mx-auto leading-relaxed">
+                Preparing your influence journey...
+              </p>
             </div>
           </div>
-          
-          <h1 className="text-5xl lg:text-6xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 bg-clip-text text-transparent">
-            We Influence
-          </h1>
-          
-          <p className="text-white/60 text-sm tracking-widest uppercase">
-            Preparing your influence journey...
-          </p>
+
+          <div className="max-w-lg mx-auto space-y-6">
+            <div className="relative">
+              <div className="h-3 bg-black/10 rounded-full overflow-hidden backdrop-blur-sm">
+                <div
+                  ref={progressBarRef}
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: '0%' }}
+                ></div>
+              </div>
+              <div className="absolute inset-0 h-3 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full blur-sm"></div>
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <span className="text-black/50 text-sm font-medium tracking-wider uppercase">Loading Assets</span>
+              <div className="flex items-center space-x-2">
+                <span ref={percentageRef} className="text-3xl font-black bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                  0
+                </span>
+                <span className="text-black/60 text-lg">%</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="max-w-md mx-auto space-y-4">
-          <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
-            <div
-              ref={progressBarRef}
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 rounded-full transition-all duration-300"
-              style={{ width: '0%' }}
-            ></div>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <span className="text-white/40 text-sm">Loading...</span>
-            <span ref={percentageRef} className="text-2xl font-black bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text text-transparent">
-              0
-            </span>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <div className="flex space-x-1">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 export default function MegaMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentLogo, setCurrentLogo] = useState('influence-logo.png');
   const overlayRef = useRef(null);
   const firstFocusableRef = useRef(null);
   const lastFocusableRef = useRef(null);
@@ -55,6 +56,35 @@ export default function MegaMenu() {
       document.removeEventListener('keydown', handleTabKey);
     };
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const professorsSection = document.querySelector('[id*="professor"], [id*="Professor"], [class*="professor"], [class*="Professor"]');
+      const offeringsSection = document.querySelector('[id*="offering"], [id*="Offering"], [class*="offering"], [class*="Offering"]');
+      
+      if (professorsSection || offeringsSection) {
+        const rect1 = professorsSection?.getBoundingClientRect();
+        const rect2 = offeringsSection?.getBoundingClientRect();
+        
+        const isInLightSection = 
+          (rect1 && rect1.top <= 100 && rect1.bottom >= 100) ||
+          (rect2 && rect2.top <= 100 && rect2.bottom >= 100);
+        
+        if (isInLightSection) {
+          setCurrentLogo('loaderlogo.png');
+        } else {
+          setCurrentLogo('influence-logo.png');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -128,9 +158,9 @@ export default function MegaMenu() {
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center group">
                 <img 
-                  src="/influence-logo.png" 
+                  src={`/${currentLogo}`}
                   alt="We Influence Logo" 
-                  className="h-12 w-auto group-hover:scale-105 transition-transform duration-200"
+                  className="h-12 w-auto group-hover:scale-105 transition-all duration-300"
                 />
               </Link>
             </div>
@@ -184,9 +214,9 @@ export default function MegaMenu() {
           <div className="flex justify-between items-center p-6 border-b border-gray-100">
             <div className="flex items-center">
               <img 
-                src="/influence-logo.png" 
+                src={`/${currentLogo}`}
                 alt="We Influence Logo" 
-                className="h-10 w-auto"
+                className="h-10 w-auto transition-all duration-300"
               />
             </div>
             

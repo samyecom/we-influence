@@ -92,7 +92,7 @@ export default function CallToActionBanner() {
             HAVE FUN AND
           </h2>
           <div className="inline-block">
-            <span ref={learnTextRef} className="text-5xl sm:text-6xl lg:text-8xl font-black text-black bg-yellow-400 px-6 sm:px-8 lg:px-12 py-3 sm:py-4 transform -skew-x-12 inline-block shadow-2xl">
+            <span ref={learnTextRef} className="text-5xl sm:text-6xl lg:text-8xl font-black text-black px-6 sm:px-8 lg:px-12 py-3 sm:py-4 transform -skew-x-12 inline-block shadow-2xl" style={{ backgroundColor: '#fed775' }}>
               LEARN!
             </span>
           </div>
@@ -106,9 +106,9 @@ export default function CallToActionBanner() {
         </p>
 
         <div className="pt-6">
-          <button ref={buttonRef} className="group relative inline-flex items-center justify-center px-12 sm:px-16 py-4 sm:py-5 bg-yellow-400 text-black font-black text-lg sm:text-xl rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-yellow-500/50">
+          <button ref={buttonRef} className="group relative inline-flex items-center justify-center px-12 sm:px-16 py-4 sm:py-5 text-black font-black text-lg sm:text-xl rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-opacity-50" style={{ backgroundColor: '#fed775' }}>
             <span className="relative z-10">LET&apos;S GO!</span>
-            <div className="absolute inset-0 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundColor: '#f5d567' }}></div>
           </button>
         </div>
       </div>

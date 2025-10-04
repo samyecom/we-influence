@@ -13,7 +13,10 @@ const offerings = [
     title: 'Course',
     name: 'Influence Academy',
     coreBenefit: 'Structured learning path designed to transform beginners into confident creators.',
-    gradient: 'from-blue-600 via-purple-600 to-indigo-600',
+    gradient: 'from-[#fed775] to-[#fed775]',
+    bgPattern: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%)',
+    accentColor: '#1976d2',
+    icon: '📚',
     hoverContent: {
       title: 'Key Modules',
       items: [
@@ -31,7 +34,10 @@ const offerings = [
     title: 'Community',
     name: 'Mastermind Network',
     coreBenefit: 'Network access with like-minded creators and industry leaders.',
-    gradient: 'from-pink-500 via-rose-500 to-orange-500',
+    gradient: 'from-[#1B475D] to-[#1B475D]',
+    bgPattern: 'linear-gradient(135deg, #fce4ec 0%, #f8bbd9 50%, #f48fb1 100%)',
+    accentColor: '#c2185b',
+    icon: '👥',
     hoverContent: {
       title: 'Access & Benefits',
       items: [
@@ -49,7 +55,10 @@ const offerings = [
     title: 'Coaching',
     name: '1:1 Mentorship',
     coreBenefit: 'Personalized roadmap with dedicated mentor guidance.',
-    gradient: 'from-emerald-500 via-teal-500 to-cyan-500',
+    gradient: 'from-[#8EBD9D] to-[#8EBD9D]',
+    bgPattern: 'linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 50%, #a5d6a7 100%)',
+    accentColor: '#388e3c',
+    icon: '🎯',
     hoverContent: {
       title: '3-Step Process',
       items: [
@@ -247,11 +256,10 @@ export default function OfferingsSection() {
 
   if (isMobile) {
     return (
-      <div className="bg-black py-20 px-6">
+      <div className="py-20 px-6" style={{ backgroundColor: '#f7e9c6' }}>
         <div className="max-w-4xl mx-auto space-y-12">
           <div className="text-center space-y-6">
-            <h2 ref={mobileTitleRef} className="text-5xl font-black text-white">Our Offerings</h2>
-            <p ref={mobileDescRef} className="text-xl text-white/60">Course. Community. Coaching.</p>
+            <h2 ref={mobileTitleRef} className="text-5xl font-black text-black">Our Offerings</h2>
           </div>
           
           {offerings.map((offering) => (
@@ -290,7 +298,8 @@ export default function OfferingsSection() {
     <div 
       ref={containerRef} 
       id="Offerings-Container" 
-      className="relative bg-black h-screen overflow-hidden"
+      className="relative h-screen overflow-hidden"
+      style={{ backgroundColor: '#f7e9c6' }}
     >
       <div className="absolute inset-0 flex items-center">
         <div ref={scrollTrackRef} className="flex items-center gap-[10vh]">
@@ -300,19 +309,26 @@ export default function OfferingsSection() {
             className="flex-shrink-0 flex flex-col items-center justify-center text-center ml-[10vh]"
             style={{ width: '100vh' }}
           >
-            <h2 className="text-8xl font-black text-white leading-none mb-8">
-              Our Offerings
-            </h2>
             <div className="space-y-4">
-              <p className="text-6xl font-black text-white drop-shadow-lg">
-                Course.
-              </p>
-              <p className="text-6xl font-black text-white drop-shadow-lg">
-                Community.
-              </p>
-              <p className="text-6xl font-black text-white drop-shadow-lg">
-                Coaching.
-              </p>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-black leading-none">
+                EXPLORE OUR
+              </h2>
+              <div className="relative inline-block">
+                <div 
+                  className="px-8 py-4 shadow-lg"
+                  style={{ 
+                    backgroundColor: '#fed775',
+                    transform: 'skewX(-12deg)'
+                  }}
+                >
+                  <span 
+                    className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-black block"
+                    style={{ transform: 'skewX(12deg)' }}
+                  >
+                    OFFERINGS
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -323,54 +339,55 @@ export default function OfferingsSection() {
               onMouseEnter={() => handleCardEnter(index)}
               onMouseLeave={() => handleCardLeave(index)}
               className="offering-card flex-shrink-0 relative cursor-pointer"
-              style={{ width: '60vh', height: '80vh' }}
+              style={{ width: '75vh', height: '65vh' }}
             >
               <div className={`relative w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br ${offering.gradient} p-12 flex flex-col justify-between`}>
                 
-                <div className="main-card-content absolute inset-0 p-12 flex flex-col justify-between">
-                  <div className="space-y-6">
-                    <div className="space-y-4">
-                      <span className="text-sm font-bold text-white/60 tracking-widest uppercase">
-                        0{offering.id}
-                      </span>
-                      <h3 className="text-7xl font-black text-white leading-none">
-                        {offering.title}
-                      </h3>
-                      <div className="h-2 w-32 rounded-full bg-white/30"></div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <p className="text-3xl font-bold text-white">
-                        {offering.name}
-                      </p>
-                      <p className="text-lg text-white/90 leading-relaxed">
-                        {offering.coreBenefit}
-                      </p>
-                    </div>
+                <div className="main-card-content absolute inset-0 p-12 flex flex-col">
+                  {/* Top Left Numbering */}
+                  <div className="absolute top-6 left-6">
+                    <span className={`font-bold tracking-widest uppercase ${offering.id === 1 ? 'text-black/60' : 'text-white/60'}`} style={{ fontSize: '30px' }}>
+                      0{offering.id}
+                    </span>
                   </div>
 
-                  <button className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-white/90 transition-colors duration-300">
-                    Explore {offering.title}
-                  </button>
+                  {/* Center Illustration (very big) */}
+                  <div className="flex justify-center items-center flex-1 pb-20">
+                    <img 
+                      src={`/images/${offering.title}.png`}
+                      alt={`${offering.title} illustration`}
+                      className="w-full h-full max-w-full object-contain drop-shadow-2xl"
+                    />
+                  </div>
+
+                  {/* Bottom Left Title and Description */}
+                  <div className="absolute bottom-6 left-6 space-y-2">
+                    <h3 className={`text-5xl font-black leading-none ${offering.id === 1 ? 'text-black' : 'text-white'}`}>
+                      {offering.title.toUpperCase()}
+                    </h3>
+                    <p className={`text-lg max-w-xs ${offering.id === 1 ? 'text-black/80' : 'text-white/80'}`}>
+                      {offering.coreBenefit}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="card-detail-overlay absolute inset-0 p-12 flex flex-col justify-center opacity-0 pointer-events-none">
                   <div className="space-y-6">
-                    <h4 className="text-4xl font-bold text-white border-b-2 border-white/30 pb-4">
+                    <h4 className={`text-4xl font-bold border-b-2 pb-4 ${offering.id === 1 ? 'text-black border-black/30' : 'text-white border-white/30'}`}>
                       {offering.hoverContent.title}
                     </h4>
                     
                     <div className="space-y-4">
                       {offering.hoverContent.items.map((item, idx) => (
                         <div key={idx} className="flex items-start space-x-4">
-                          <div className="w-3 h-3 rounded-full bg-white mt-2 flex-shrink-0"></div>
-                          <span className="text-xl text-white font-medium">{item}</span>
+                          <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${offering.id === 1 ? 'bg-black' : 'bg-white'}`}></div>
+                          <span className={`text-xl font-medium ${offering.id === 1 ? 'text-black' : 'text-white'}`}>{item}</span>
                         </div>
                       ))}
                     </div>
 
-                    <div className="pt-6 mt-6 border-t border-white/30">
-                      <p className="text-white/80 text-lg font-semibold">
+                    <div className={`pt-6 mt-6 border-t ${offering.id === 1 ? 'border-black/30' : 'border-white/30'}`}>
+                      <p className={`text-lg font-semibold ${offering.id === 1 ? 'text-black/80' : 'text-white/80'}`}>
                         {offering.hoverContent.duration}
                       </p>
                     </div>
