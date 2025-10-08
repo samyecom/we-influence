@@ -151,16 +151,24 @@ export default function Hero() {
       </div>
         
       <div ref={sectionsContainerRef} className="relative z-10">
-        <section className="lg:min-h-screen flex items-center justify-center py-12 sm:py-16 md:py-20">
-          
-          <div className="relative z-10 text-center space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6">
+        <section className="lg:min-h-screen flex items-center justify-start py-12 sm:py-16 md:py-20">
+          <div className="w-full px-6 lg:px-8">
+            <div className="relative z-10 text-left space-y-4 sm:space-y-6 md:space-y-8">
             <h1 ref={firstHeadingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black leading-tight">
-              <span className="text-white">WE </span>
-              <span className="text-white">INFLUENCE</span>
+              <div className="text-white">WE</div>
+              <div className="inline-block mt-2">
+                <span 
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-black px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 transform -skew-x-12 inline-block shadow-2xl"
+                  style={{ backgroundColor: '#fed775' }}
+                >
+                  INFLUENCE
+                </span>
+              </div>
             </h1>
-            <p ref={firstDescRef} className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-xl lg:max-w-2xl mx-auto" style={{ color: '#fed775' }}>
+            <p ref={firstDescRef} className="text-base sm:text-lg md:text-xl lg:text-4xl leading-relaxed max-w-xl lg:max-w-5xl" style={{ color: '#ffffff' }}>
               Transform your ideas into powerful digital experiences.
             </p>
+            </div>
           </div>
         </section>
 
@@ -173,14 +181,16 @@ export default function Hero() {
           }}
           ></div>
           
-          <div className="relative z-10 text-center space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6">
+          <div className="w-full px-6 lg:px-8">
+            <div className="relative z-10 text-center space-y-2 sm:space-y-4 md:space-y-6">
             <h1 ref={secondHeadingRef} className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black leading-tight">
               <span className="text-white">SCALE YOUR </span>
-              <span className="text-white">IMPACT</span>
+              <span style={{ color: '#fed775' }}>IMPACT</span>
             </h1>
-            <p ref={secondDescRef} className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-xl lg:max-w-2xl mx-auto" style={{ color: '#fed775' }}>
+            <p ref={secondDescRef} className="text-base sm:text-lg md:text-xl lg:text-4xl leading-relaxed max-w-xl lg:max-w-5xl mx-auto" style={{ color: '#ffffff' }}>
               Reach more people through cutting-edge technology and strategic design.
             </p>
+            </div>
           </div>
         </section>
       </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -11,17 +10,15 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 export default function CallToActionBanner() {
   const headingRef = useRef(null);
   const learnTextRef = useRef(null);
-  const descRef = useRef(null);
   const buttonRef = useRef(null);
   const splitTextInstances = useRef([]);
 
   useEffect(() => {
     const heading = headingRef.current;
     const learnText = learnTextRef.current;
-    const desc = descRef.current;
     const button = buttonRef.current;
 
-    const elements = [heading, learnText, desc, button].filter(Boolean);
+    const elements = [heading, learnText, button].filter(Boolean);
     
     elements.forEach((element, index) => {
       if (element) {
@@ -68,25 +65,27 @@ export default function CallToActionBanner() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
-        <Image
-          src="/cta-banner-bg.jpg"
-          alt="Students having fun and learning"
-          fill
-          className="object-cover"
-          priority
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover opacity-70"
           onError={(e) => {
             e.target.style.display = 'none';
             e.target.nextSibling.style.display = 'block';
           }}
-        />
+        >
+          <source src="/video/learnvideo.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/40" style={{ display: 'none' }}></div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-black/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/70"></div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-12 lg:px-16 text-center space-y-8 sm:space-y-12">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-8 lg:px-12 text-center space-y-6 sm:space-y-8">
         <div className="space-y-4">
           <h2 ref={headingRef} className="text-5xl sm:text-6xl lg:text-8xl font-black text-white leading-none tracking-tight">
             HAVE FUN AND
@@ -98,7 +97,7 @@ export default function CallToActionBanner() {
           </div>
         </div>
 
-        <p ref={descRef} className="text-lg sm:text-xl lg:text-2xl text-white leading-relaxed max-w-3xl mx-auto">
+        <p className="text-lg sm:text-xl lg:text-2xl text-white leading-relaxed max-w-3xl mx-auto">
           Being a Student Marketeer will not only push you professionally, but will also 
           give you the chance to have the time of your life! This job offers the 
           opportunity to maximize your strengths and develop important Sales and 

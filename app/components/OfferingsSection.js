@@ -306,7 +306,7 @@ export default function OfferingsSection() {
           
           <div 
             ref={titleRef}
-            className="flex-shrink-0 flex flex-col items-center justify-center text-center ml-[10vh]"
+            className="flex-shrink-0 flex flex-col items-start justify-center ml-[10vh]"
             style={{ width: '100vh' }}
           >
             <div className="space-y-4">
@@ -322,7 +322,7 @@ export default function OfferingsSection() {
                   }}
                 >
                   <span 
-                    className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-black block"
+                    className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-black block text-left"
                     style={{ transform: 'skewX(12deg)' }}
                   >
                     OFFERINGS

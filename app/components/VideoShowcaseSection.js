@@ -11,48 +11,48 @@ const videoCards = [
   {
     id: 1,
     title: 'Course Highlight',
-    thumbnail: '/videos/course-preview.jpg',
-    videoUrl: '/videos/course.mp4',
+    thumbnail: '/images/Course.png',
+    videoUrl: '/video/Video1.mp4',
     offer: 'Start Learning Today',
     gradient: 'from-blue-600 to-purple-600'
   },
   {
     id: 2,
     title: 'Community Vibes',
-    thumbnail: '/videos/community-preview.jpg',
-    videoUrl: '/videos/community.mp4',
+    thumbnail: '/images/Community.png',
+    videoUrl: '/video/Video2.mp4',
     offer: 'Join The Network',
     gradient: 'from-pink-500 to-orange-500'
   },
   {
     id: 3,
     title: 'Coaching Success',
-    thumbnail: '/videos/coaching-preview.jpg',
-    videoUrl: '/videos/coaching.mp4',
+    thumbnail: '/images/Coaching.png',
+    videoUrl: '/video/Video3.mp4',
     offer: 'Book Your Session',
     gradient: 'from-emerald-500 to-cyan-500'
   },
   {
     id: 4,
     title: 'Student Stories',
-    thumbnail: '/videos/stories-preview.jpg',
-    videoUrl: '/videos/stories.mp4',
+    thumbnail: '/images/Course.png',
+    videoUrl: '/video/Video4.mp4',
     offer: 'Hear From Alumni',
     gradient: 'from-yellow-500 to-red-500'
   },
   {
     id: 5,
     title: 'Behind The Scenes',
-    thumbnail: '/videos/bts-preview.jpg',
-    videoUrl: '/videos/bts.mp4',
+    thumbnail: '/images/Community.png',
+    videoUrl: '/video/Video5.mp4',
     offer: 'See How We Work',
     gradient: 'from-indigo-500 to-purple-500'
   },
   {
     id: 6,
     title: 'Results & Impact',
-    thumbnail: '/videos/results-preview.jpg',
-    videoUrl: '/videos/results.mp4',
+    thumbnail: '/images/Coaching.png',
+    videoUrl: '/video/Video6.mp4',
     offer: 'View Success Stats',
     gradient: 'from-green-500 to-teal-500'
   }
@@ -61,10 +61,13 @@ const videoCards = [
 export default function VideoShowcaseSection() {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
+  const counterRef = useRef(null);
   const marqueeTrackRef = useRef(null);
   const cardsRef = useRef([]);
   const cursorRef = useRef(null);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [counter, setCounter] = useState(0);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const marqueeTween = useRef(null);
   const splitTextInstance = useRef(null);
   const xTo = useRef(null);
@@ -72,6 +75,7 @@ export default function VideoShowcaseSection() {
 
   useEffect(() => {
     const header = headerRef.current;
+    const counter = counterRef.current;
     const section = sectionRef.current;
     const marqueeTrack = marqueeTrackRef.current;
     const cursor = cursorRef.current;
@@ -98,7 +102,7 @@ export default function VideoShowcaseSection() {
       charsClass: 'split-char'
     });
 
-        ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: section,
       start: 'top 80%',
       once: true,
@@ -113,7 +117,38 @@ export default function VideoShowcaseSection() {
             stagger: 0.02,
             duration: 0.8,
             ease: 'back.out(1.7)',
+          })
+          .call(() => {
+            gsap.to({}, {
+              duration: 2,
+              ease: 'power2.out',
+              onUpdate: function() {
+                const progress = this.progress();
+                const currentValue = Math.round(progress * 60);
+                setCounter(currentValue);
+              }
+            });
           });
+      }
+    });
+
+    // Separate counter animation
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        setTimeout(() => {
+          gsap.to({}, {
+            duration: 2,
+            ease: 'power2.out',
+            onUpdate: function() {
+              const progress = this.progress();
+              const currentValue = Math.round(progress * 60);
+              setCounter(currentValue);
+            }
+          });
+        }, 1000);
       }
     });
 
@@ -144,7 +179,7 @@ export default function VideoShowcaseSection() {
     const card = cardsRef.current[index];
     if (card) {
       gsap.to(card, {
-        scale: 1.05,
+        scale: 1.02,
         rotationY: 5,
         duration: 0.4,
         ease: 'power2.out',
@@ -169,8 +204,16 @@ export default function VideoShowcaseSection() {
     }
   };
 
+  const handleCardClick = (card) => {
+    setSelectedVideo(card);
+  };
+
+  const closeModal = () => {
+    setSelectedVideo(null);
+  };
+
   return (
-    <section ref={sectionRef} className="relative bg-black py-20 overflow-hidden">
+    <section ref={sectionRef} className="relative py-20 overflow-hidden" style={{ backgroundColor: '#fed775' }}>
       <div
         ref={cursorRef}
         className={`flair fixed w-32 h-32 bg-white rounded-full pointer-events-none z-50 mix-blend-difference flex items-center justify-center transition-opacity duration-300 ${
@@ -187,11 +230,11 @@ export default function VideoShowcaseSection() {
           ref={headerRef}
           className="split-header text-5xl sm:text-6xl lg:text-8xl font-black text-white text-center leading-tight"
         >
-          We Influence in 60 Seconds
+          We <span style={{ color: '#000000' }}>Influence</span> in <span style={{ color: '#000000' }}><span ref={counterRef}>{counter}</span> Seconds</span>
         </h2>
       </div>
 
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-visible">
         <div 
           ref={marqueeTrackRef}
           className="video-marquee-track flex gap-8"
@@ -203,6 +246,7 @@ export default function VideoShowcaseSection() {
               ref={(el) => (cardsRef.current[index] = el)}
               onMouseEnter={() => handleCardEnter(index)}
               onMouseLeave={() => handleCardLeave(index)}
+              onClick={() => handleCardClick(card)}
               className="video-card flex-shrink-0 relative cursor-pointer"
               style={{
                 width: '300px',
@@ -214,6 +258,7 @@ export default function VideoShowcaseSection() {
                 
                 <video
                   className="absolute inset-0 w-full h-full object-cover opacity-80"
+                  autoPlay
                   loop
                   muted
                   playsInline
@@ -251,11 +296,34 @@ export default function VideoShowcaseSection() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-16 text-center">
-        <p className="text-xl text-white/60 animate-pulse">
-          Swipe through our stories • Hover to pause • Click to explore
-        </p>
-      </div>
+      {/* Video Modal */}
+      {selectedVideo && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-sm">
+            <button
+              onClick={closeModal}
+              className="absolute -top-12 right-0 text-white text-2xl hover:text-gray-300 transition-colors duration-200"
+            >
+              ✕
+            </button>
+            <div className="relative w-full bg-black rounded-lg overflow-hidden">
+              <video
+                className="w-full"
+                controls
+                autoPlay
+                muted
+                playsInline
+              >
+                <source src={selectedVideo.videoUrl} type="video/mp4" />
+              </video>
+            </div>
+            <div className="mt-4 text-center">
+              <h3 className="text-xl font-bold text-white mb-2">{selectedVideo.title}</h3>
+              <p className="text-white/80 text-sm">{selectedVideo.offer}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

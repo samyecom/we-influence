@@ -32,7 +32,7 @@ const professors = [
     title: 'PhD at ExperienceU',
     description: '"The Veteran" - seasoned expert at We Influence with decades of industry experience. Known for transforming complex concepts into actionable strategies that deliver real-world results.',
     image: '/images/prof3.png',
-    bgColor: 'bg-[#8EBD9D]'
+    bgColor: 'bg-[#2e265b]'
   },
 ];
 

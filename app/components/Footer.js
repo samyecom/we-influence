@@ -99,7 +99,6 @@ export default function Footer() {
         const progress = self.progress;
         gsap.to(logo, {
           y: progress * 50,
-          rotationZ: progress * 10,
           ease: 'none'
         });
       }
@@ -184,20 +183,19 @@ export default function Footer() {
       <footer
         ref={footerRef}
         id="Academy-Final-Footer"
-        className="relative text-black overflow-hidden"
-        style={{ backgroundColor: '#fed775' }}
+        className="relative text-white overflow-hidden bg-black"
       >
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMSIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20">
+        <div className="relative w-full px-6 lg:px-8 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-24">
             
             <div ref={leftColumnRef} className="space-y-8">
-              <h3 className="text-2xl font-bold text-black/60 mb-6">Navigate</h3>
+              <h3 className="text-3xl font-bold text-white/60 mb-6">Navigate</h3>
               <div className="grid grid-cols-3 gap-8">
                 {navigationLinks.map((group, groupIndex) => (
                   <div key={groupIndex} className="space-y-4">
-                    <h4 className="text-sm font-bold text-black/80 uppercase tracking-wider">
+                    <h4 className="text-base font-bold text-white/80 uppercase tracking-wider">
                       {group.title}
                     </h4>
                     <ul className="space-y-3">
@@ -207,7 +205,7 @@ export default function Footer() {
                             href={link.href}
                             onMouseEnter={() => setHoveredLink(`${groupIndex}-${linkIndex}`)}
                             onMouseLeave={() => setHoveredLink(null)}
-                            className="text-black/70 hover:text-black transition-colors duration-200 text-sm"
+                            className="text-white/70 hover:text-white transition-colors duration-200 text-base"
                           >
                             {link.name}
                           </a>
@@ -220,21 +218,21 @@ export default function Footer() {
             </div>
 
             <div ref={logoRef} className="flex items-center justify-center">
-              <div className="bg-black rounded-[20px] p-8">
+              <div className="p-8 cursor-pointer">
                 <img 
                   src="/influence-logo.png" 
                   alt="We Influence Academy Logo" 
-                  className="w-48 h-48 object-contain"
+                  className="w-100 h-40 object-contain transition-transform duration-300 hover:rotate-2"
                 />
               </div>
             </div>
 
             <div ref={rightColumnRef} className="space-y-8">
               <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-black">
+                <h3 className="text-3xl font-bold text-white">
                   Unlock Your Exclusive<br />Influence Roadmap
                 </h3>
-                <p className="text-black/60">
+                <p className="text-white/60 text-lg">
                   Get Early Access & Start Your Journey
                 </p>
               </div>
@@ -247,16 +245,16 @@ export default function Footer() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                     required
-                    className="w-full px-6 py-4 bg-black/10 border border-black/20 rounded-full text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black transition-all duration-300"
+                    className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-full text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-300"
                   />
                   <button
                     ref={submitButtonRef}
                     type="submit"
                     onMouseEnter={handleSubmitHover}
                     onMouseLeave={handleSubmitLeave}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black rounded-full flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
+                    className="absolute right-2 top-1/2 bg-white rounded-full flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
                   >
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </button>
@@ -264,7 +262,7 @@ export default function Footer() {
               </form>
 
               <div className="pt-8 border-t border-black/10">
-                <p className="text-black/40 text-sm mb-4">Follow Us</p>
+                <p className="text-white/40 text-base mb-4">Follow Us</p>
                 <div className="flex space-x-4">
                   {socialLinks.map((social, index) => (
                     <a
@@ -272,9 +270,9 @@ export default function Footer() {
                       href={social.href}
                       onMouseEnter={() => setHoveredLink(`social-${index}`)}
                       onMouseLeave={() => setHoveredLink(null)}
-                      className="w-12 h-12 rounded-full border border-black/20 flex items-center justify-center hover:border-black hover:bg-black/10 transition-all duration-300"
+                      className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-white hover:bg-white/10 transition-all duration-300"
                     >
-                      <span className="text-xs font-bold text-black">{social.icon}</span>
+                      <span className="text-xs font-bold text-white">{social.icon}</span>
                     </a>
                   ))}
                 </div>
@@ -282,15 +280,15 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-black/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-black/40 text-sm">
+          <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-white/40 text-base">
               © 2025 We Influence Academy. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <a href="/privacy" className="text-black/40 hover:text-black text-sm transition-colors duration-200">
+              <a href="/privacy" className="text-white/40 hover:text-white text-base transition-colors duration-200">
                 Privacy Policy
               </a>
-              <a href="/terms" className="text-black/40 hover:text-black text-sm transition-colors duration-200">
+              <a href="/terms" className="text-white/40 hover:text-white text-base transition-colors duration-200">
                 Terms of Service
               </a>
             </div>
