@@ -5,8 +5,9 @@ import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrollSmoother);
 
 const professors = [
   {
@@ -135,8 +136,8 @@ export default function ProfessorsSection() {
 
     cards.forEach((card, index) => {
       gsap.set(card, {
-        scale: 1,
-        y: index === 0 ? 0 : 100,
+        scale: index === 0 ? 1 : 0.8,
+        y: index === 0 ? 0 : window.innerHeight + index * 50,
         rotation: 0,
         opacity: index === 0 ? 1 : 0,
         zIndex: professors.length - index,
@@ -157,8 +158,9 @@ export default function ProfessorsSection() {
       end: `+=${window.innerHeight * (professors.length + 0.5)}`,
       pin: true,
       pinSpacing: true,
-      scrub: 1,
+      scrub: 1.2,
       anticipatePin: 1,
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
         const progress = self.progress;
         const totalProgress = progress * professors.length;
@@ -170,29 +172,38 @@ export default function ProfessorsSection() {
         setActiveIndex(currentIndex);
 
         cards.forEach((card, index) => {
-          if (index <= currentIndex) {
-            const stackPosition = currentIndex - index;
-            const scale = 1 - stackPosition * 0.08;
-            const yOffset = -stackPosition * 25;
-            const rotation = -stackPosition * 5;
-            const opacity = 1;
-            
+          // Set z-index immediately without animation
+          if (index === currentIndex) {
+            gsap.set(card, { zIndex: 10 });
             gsap.to(card, {
-              scale: scale,
-              y: yOffset,
-              rotation: rotation,
-              opacity: opacity,
-              zIndex: professors.length - stackPosition,
-              duration: 0.3,
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              rotation: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              overwrite: 'auto',
+            });
+          } else if (index < currentIndex) {
+            const parallaxOffset = (currentIndex - index) * -100;
+            gsap.set(card, { zIndex: 5 - index });
+            gsap.to(card, {
+              y: parallaxOffset,
+              opacity: 0.3,
+              scale: 0.9,
+              rotation: 0,
+              duration: 0.8,
               ease: 'power2.out',
               overwrite: 'auto',
             });
           } else {
+            gsap.set(card, { zIndex: 1 });
             gsap.to(card, {
-              y: 100,
+              y: window.innerHeight + (index - currentIndex) * 50,
               opacity: 0,
-              scale: 1,
-              duration: 0.3,
+              scale: 0.8,
+              rotation: 0,
+              duration: 0.8,
               ease: 'power2.out',
               overwrite: 'auto',
             });
@@ -356,9 +367,9 @@ export default function ProfessorsSection() {
           {professors.map((prof, index) => (
             <div
               key={prof.id}
-              className="professor-card absolute top-0 left-0 right-0 bottom-0 m-4 sm:m-6 lg:m-8"
+              className="professor-card absolute inset-0"
             >
-              <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-gray-800">
+              <div className="relative w-full h-full overflow-hidden shadow-2xl bg-gray-800">
                 <Image
                   src={prof.image}
                   alt={`${prof.name} holding basketball`}

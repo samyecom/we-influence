@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrollSmoother);
 
 const videoCards = [
   {
@@ -157,7 +158,7 @@ export default function VideoShowcaseSection() {
     
     marqueeTween.current = gsap.to(marqueeTrack, {
       x: -(trackWidth - viewportWidth),
-      duration: 60,
+      duration: 30,
       ease: 'none',
       repeat: -1,
     });
@@ -185,6 +186,11 @@ export default function VideoShowcaseSection() {
         ease: 'power2.out',
       });
     }
+
+    const video = card?.querySelector('video');
+    if (video) {
+      video.play();
+    }
   };
 
   const handleCardLeave = (index) => {
@@ -202,9 +208,15 @@ export default function VideoShowcaseSection() {
         ease: 'power2.out',
       });
     }
+
+    const video = card?.querySelector('video');
+    if (video) {
+      video.pause();
+    }
   };
 
   const handleCardClick = (card) => {
+    console.log('Card clicked:', card);
     setSelectedVideo(card);
   };
 
@@ -212,15 +224,20 @@ export default function VideoShowcaseSection() {
     setSelectedVideo(null);
   };
 
+  const handleWatchNowClick = (card) => {
+    console.log('Watch Now clicked:', card);
+    setSelectedVideo(card);
+  };
+
   return (
     <section ref={sectionRef} className="relative py-20 overflow-hidden" style={{ backgroundColor: '#fed775' }}>
       <div
         ref={cursorRef}
-        className={`flair fixed w-32 h-32 bg-white rounded-full pointer-events-none z-50 mix-blend-difference flex items-center justify-center transition-opacity duration-300 ${
+        className={`flair fixed w-32 h-32 bg-black rounded-full pointer-events-none z-50 flex items-center justify-center transition-opacity duration-300 ${
           hoveredCard !== null ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <span className="text-black font-black text-sm text-center">
+        <span className="text-white font-black text-sm text-center">
           VIEW<br/>OFFER
         </span>
       </div>
@@ -258,11 +275,11 @@ export default function VideoShowcaseSection() {
                 
                 <video
                   className="absolute inset-0 w-full h-full object-cover opacity-80"
-                  autoPlay
                   loop
                   muted
                   playsInline
                   poster={card.thumbnail}
+                  preload="metadata"
                 >
                   <source src={card.videoUrl} type="video/mp4" />
                 </video>
@@ -280,7 +297,13 @@ export default function VideoShowcaseSection() {
                       <p className="text-white font-bold text-lg">
                         {card.offer}
                       </p>
-                      <button className="w-full py-3 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-colors duration-300">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleWatchNowClick(card);
+                        }}
+                        className="w-full py-3 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-colors duration-300"
+                      >
                         Watch Now
                       </button>
                     </div>
@@ -298,11 +321,22 @@ export default function VideoShowcaseSection() {
 
       {/* Video Modal */}
       {selectedVideo && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh'
+          }}
+        >
           <div className="relative w-full max-w-sm">
             <button
               onClick={closeModal}
-              className="absolute -top-12 right-0 text-white text-2xl hover:text-gray-300 transition-colors duration-200"
+              className="absolute -top-12 right-0 text-white text-2xl hover:text-gray-300 transition-colors duration-200 z-[10000]"
             >
               ✕
             </button>
